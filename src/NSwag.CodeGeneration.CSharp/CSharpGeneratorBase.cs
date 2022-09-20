@@ -83,6 +83,11 @@ namespace NSwag.CodeGeneration.CSharp
                 .Where(p => p.Value != exceptionSchema)
                 .ToDictionary(p => p.Key, p => p.Value));
 
+            resolver.RegisterSchemaDefinitions(document.Components.RequestBodies
+                .Select(kp => (kp.Key, kp.Value.Content.FirstOrDefault().Value?.Schema))
+                .Where(p => p.Schema != exceptionSchema && p.Schema != null)
+                .ToDictionary(p => p.Key, p => p.Schema));
+
             return resolver;
         }
 

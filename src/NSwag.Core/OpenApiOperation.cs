@@ -92,7 +92,7 @@ namespace NSwag
 
         /// <summary>Gets or sets the request body (OpenAPI only).</summary>
         [JsonProperty(PropertyName = "requestBody", Order = 9, DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public OpenApiRequestBody RequestBody
+        public OpenApiRequestBody JsonRequestBody
         {
             get => _requestBody;
             set
@@ -104,6 +104,14 @@ namespace NSwag
                     UpdateBodyParameter();
                 }
             }
+        }
+
+        /// <summary>Gets or sets the request body (OpenAPI only).</summary>
+        [JsonIgnore]
+        public OpenApiRequestBody RequestBody
+        {
+            get => JsonRequestBody?.ActualRequestBody;
+            set => JsonRequestBody = value;
         }
 
         /// <summary>Gets the actual parameters (a combination of all inherited and local parameters).</summary>

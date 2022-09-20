@@ -60,6 +60,17 @@ namespace NSwag
 
             Examples = new Dictionary<string, OpenApiExample>();
 
+
+            var requestBodies = new ObservableDictionary<string, OpenApiRequestBody>();
+            requestBodies.CollectionChanged += (sender, args) =>
+            {
+                foreach (var body in RequestBodies.Values)
+                {
+                    body.ParentDocument = document;
+                }
+            };
+            RequestBodies = requestBodies;
+
             var headers = new ObservableDictionary<string, OpenApiParameter>();
             headers.CollectionChanged += (sender, args) =>
             {
@@ -94,11 +105,15 @@ namespace NSwag
         [JsonProperty(PropertyName = "parameters", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public IDictionary<string, OpenApiParameter> Parameters { get; }
 
-        /// <summary>Gets or sets the headers.</summary>
+        /// <summary>Gets or sets the examples.</summary>
         [JsonProperty(PropertyName = "examples", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public IDictionary<string, OpenApiExample> Examples { get; set; }
 
-        /// <summary>Gets or sets the types.</summary>
+        /// <summary>Gets or sets the request bodies.</summary>
+        [JsonProperty(PropertyName = "requestBodies", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public IDictionary<string, OpenApiRequestBody> RequestBodies { get; set; }
+
+        /// <summary>Gets or sets the headers.</summary>
         [JsonProperty(PropertyName = "headers", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public IDictionary<string, OpenApiParameter> Headers { get; }
 
